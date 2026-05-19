@@ -40,6 +40,8 @@ EVENT_SEVERITY = {
         4657: 'WARNING', #REGISTRY VALUE MODIFIED
         4698: 'WARNING', #SCHEDULE TASK CREATED
         1102: 'CRITICAL', #AUDIT LOG CLEARED
+        4800: 'INFO', #workstation locked (Win+L)
+        4801: 'INFO' #workstation unlocked
     },
     'System': {
         7045: 'CRITICAL' #NEW SERVICE INSTALLED

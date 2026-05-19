@@ -10,9 +10,9 @@ def main():
     stop_event = threading.Event()
     i = 0
     thread_functions = {
-        start_file_watcher: 'FileWatcher',
-        start_process_watcher: 'ProcessWatcher',
-        start_event_log_watcher: 'EventWatcher'
+        (start_file_watcher, 'FileWatcher'),
+        (start_process_watcher, 'ProcessWatcher'),
+        (start_event_log_watcher, 'EventWatcher')
     }
 
     scan_run_keys()
@@ -28,11 +28,14 @@ def main():
         t.start()
 
     try:
-        for t in threads:
-            t.join()
+        while not stop_event.is_set():
+            stop_event.wait(0.5)
     except KeyboardInterrupt:
         logger.info('Solar Shield is shutting down')
         stop_event.set()
         for t in threads:
             t.join(timeout=5)
         logger.info('Shutdown complete')
+
+if __name__ == "__main__":
+    main()

@@ -3,10 +3,10 @@ from config import PROCESS_CHECK_INTERVAL, PROCESS_SNAPSHOT_EVERY
 from core.logger import logger, log_event
 
 def start_process_watcher(stop_event):
-    logger.info('Process watcher starting...')
+    logger.info("============PROCESS_WATCHER_STARTED============")
     log_system_snapshot()
     watch_processes(stop_event)
-    logger.info('Process watcher stopped.')
+    logger.info("============PROCESS_WATCHER_ENDED============")
 
 def get_process_snapshot():
     snapshot = {}

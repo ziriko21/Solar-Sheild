@@ -45,9 +45,11 @@ def start_file_watcher(stop_event):
         if path and os.path.exists(path):
             observer.schedule(handler, path, recursive = True)
     observer.start()
+    logger.info("============FILE_WATCHER_STARTED============")
     while not stop_event.is_set():
         stop_event.wait(1)
 
     observer.stop()
     observer.join()
+    logger.info("============FILE_WATCHER_ENDED============")
 

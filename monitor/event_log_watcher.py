@@ -9,7 +9,7 @@ def start_event_log_watcher(stop_event):
         'System': datetime.now()
     }
     
-    logger.info('Event log has started')
+    logger.info('============EVENT_LOG_HAS_STARTED============')
     while not stop_event.is_set():
         stop_event.wait(EVENT_LOG_CHECK_INTERVAL)
         for channel, watched_ids in EVENT_SEVERITY.items():
@@ -17,22 +17,23 @@ def start_event_log_watcher(stop_event):
                 last_scan[channel] = log_channel(channel, watched_ids, last_scan)
             except PermissionError:
                 continue
-    logger.info('Event log has stopped')
+    logger.info('============EVENT_LOG_SHUTDOWN============')
 
 def log_channel(channel, watched_ids, last_scan):
     handle = win32evtlog.OpenEventLog(None, channel)
     flags = win32evtlog.EVENTLOG_BACKWARDS_READ | win32evtlog.EVENTLOG_SEQUENTIAL_READ
-    last_event = 0
+    last_event = last_scan[channel]
     try:
         events = win32evtlog.ReadEventLog(handle, flags, 0)
         for event in events:
-            event_id = event.EVENTID & 0xFFFF
-            if event.TimeGenerated <= last_scan[channel] or event_id not in watched_ids:
+            event_id = event.EventID & 0xFFFF
+            timestamp = event.TimeGenerated.replace(tzinfo=None)
+            if timestamp <= last_scan[channel] or event_id not in watched_ids:
                 continue
-            severity = EVENT_SEVERITY.get(event_id, 'INFO')
+            severity = watched_ids.get(event_id, 'INFO')
             log_event(event_type="WINDOWS_EVENT", path=channel, severity=severity, extra={
                 'event_id': event_id,
-                'source': event.source,
+                'source': event.SourceName,
                 'string_inserts': event.StringInserts
             })
             last_event = event.TimeGenerated
