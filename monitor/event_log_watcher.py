@@ -27,7 +27,7 @@ def log_channel(channel, watched_ids, last_scan):
         events = win32evtlog.ReadEventLog(handle, flags, 0)
         for event in events:
             event_id = event.EVENTID & 0xFFFF
-            if event.TimeGenerated <= last_scan or event not in watched_ids:
+            if event.TimeGenerated <= last_scan[channel] or event_id not in watched_ids:
                 continue
             severity = EVENT_SEVERITY.get(event_id, 'INFO')
             log_event(event_type="WINDOWS_EVENT", path=channel, severity=severity, extra={

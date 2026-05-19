@@ -13,7 +13,7 @@ class AkameHandler(FileSystemEventHandler):
         h = hash_file(event.src_path)
         _, extension = os.path.splitext(event.src_path)
         if extension in SUSPICIOUS_EXTENSIONS:
-            log_event('FILE_CREATED:', event.src_path, 'CRITICAL', h)
+            log_event('FILE_CREATED', event.src_path, 'CRITICAL', h)
         else: 
             log_event('FILE_CREATED', event.src_path, 'INFO', h)
     

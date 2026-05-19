@@ -29,7 +29,7 @@ def log_system_snapshot():
     totalGB = round(ram.total/1024**3, 2)
     usedGB = round(ram.used/1024**3, 2)
 
-    log_event('SYSTEM_SNAPSHOT:', path='system', severity='INFO', extra={
+    log_event('SYSTEM_SNAPSHOT', path='system', severity='INFO', extra={
         'cpu_percent': cpu_percent,
         'ram_percent': ram.percent,
         'ram_used_gb': usedGB,
