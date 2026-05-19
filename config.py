@@ -1,4 +1,5 @@
 import os
+import winreg
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
@@ -22,15 +23,25 @@ SUSPICIOUS_EXTENSIONS = {
 
 PROCESS_CHECK_INTERVAL = 3
 
-REGISTRY_RUN_KEYS = [
-    (r'Software\Microsoft\Windows\CurrentVersion\Run', 'HKCU'),
-    (r'Software\Microsoft\Windows\CurrentVersion\Run', 'HKLM'),
+RUN_KEYS = [
+    (winreg.HKEY_CURRENT_USER, r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run'),
+    (winreg.HKEY_LOCAL_MACHINE, r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run'),
 ]
 
 PROCESS_SNAPSHOT_EVERY = 10
 
-WATCHED_EVENT_IDS = {
-    'Security': [4688, 4624, 4625, 4657, 4698, 1102],
-    'System': [7045],
-}
 EVENT_LOG_CHECK_INTERVAL = 10
+
+EVENT_SEVERITY = {
+    'Security': {
+        4688: 'INFO', #NEW PROCESS CREAD WITH FULL COMMAND LINE
+        4624: 'INFO', #SUCCESSFUL ACCOUNT LOGIN
+        4625: 'WARNING', #FAILED LOGIN ATTEMPT
+        4657: 'WARNING', #REGISTRY VALUE MODIFIED
+        4698: 'WARNING', #SCHEDULE TASK CREATED
+        1102: 'CRITICAL', #AUDIT LOG CLEARED
+    },
+    'System': {
+        7045: 'CRITICAL' #NEW SERVICE INSTALLED
+    }
+}
