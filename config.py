@@ -47,3 +47,15 @@ EVENT_SEVERITY = {
         7045: 'CRITICAL' #NEW SERVICE INSTALLED
     }
 }
+
+COLUMNS_TO_DROP = {
+    'timestamp', 'event_type', 'severity', 'path', 'extra', 'sha256', 'file_ext'
+}
+
+SENSITIVE_LOCATIONS = {
+    'in_temp':     'temp',
+    'in_appdata':  'appdata',
+    'in_system32': 'system32',
+    'in_startup':  'startup',
+    'in_programdata': 'programdata',
+}

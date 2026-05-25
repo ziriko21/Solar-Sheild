@@ -11,7 +11,7 @@ def scan_run_keys():
                 while True:
                     try:
                         name, data, _ = winreg.EnumValue(key, i)
-                        log_event("REGISTRY RUN KEY: ", path, severity='INFO', file_hash=None, extra={
+                        log_event("REGISTRY RUN KEY", path, severity='INFO', file_hash=None, extra={
                             'name': name,
                             'command': data
                             })
