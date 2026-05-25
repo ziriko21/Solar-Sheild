@@ -1,0 +1,16 @@
+# Malware samples
+samples/
+*.exe
+*.bin
+*.dll
+*.pcap
+
+# VM files (too large for git)
+*.vmdk
+*.vmx
+*.vmem
+
+# Analysis output
+reports/
+logs/
+dumps/
